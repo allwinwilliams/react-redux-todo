@@ -14,15 +14,15 @@ class Tasks extends Component{
     return(
       <ul>
         <TaskList
-          tasks={_.reject(this.props.tasks, function(x) { return x.state!==0; })}
+          tasks={_.filter(this.props.tasks, function(x) { return x.state==0; })}
           title="To be done"
         />
         <TaskList
-          tasks={_.reject(this.props.tasks, function(x) { return x.state!==1; })}
+          tasks={_.filter(this.props.tasks, function(x) { return x.state==1; })}
           title="Doing"
         />
         <TaskList
-          tasks={_.reject(this.props.tasks, function(x) { return x.state!==2; })}
+          tasks={_.filter(this.props.tasks, function(x) { return x.state==2; })}
           title="Done"
         />
       </ul>

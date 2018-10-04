@@ -13,6 +13,11 @@ export default (state=[], action)=>{
       var new_state=_.remove(state, (o)=>o.id!==action.payload);
       console.log(new_state);
       return new_state;
+    case CREATE_TASK:
+      console.log("CREATETASK");
+      console.log(action.payload);
+      return _.concat(state,{id:_.uniqueId(), title: action.payload.title,description: action.payload.description,dueDate: action.payload.dueDate,state: _.toInteger(action.payload.state), member: action.payload.member});
+      return state
     default:
       return state;
   }

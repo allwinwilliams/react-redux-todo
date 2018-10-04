@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TaskItem from '../TaskItem/TaskItem';
+import _ from 'lodash';
 
 export default class TaskList extends Component{
 
@@ -7,7 +8,7 @@ export default class TaskList extends Component{
     return(
       <ul>
         {
-          this.props.tasks.map((task)=>(
+          _.map(this.props.tasks, (task)=>(
             <TaskItem
               key={task.id}
               {...task}
