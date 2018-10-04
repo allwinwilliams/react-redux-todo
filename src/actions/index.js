@@ -1,7 +1,7 @@
 import Firebase from 'firebase';
 import _ from 'lodash';
 
-import {FETCH_TASKS, CREATE_TASK, EDIT_TASK, DELETE_TASK} from './types';
+import {FETCH_TASKS, FETCH_TASK, CREATE_TASK, EDIT_TASK, DELETE_TASK} from './types';
 
 
 const INIT_TASKS=[
@@ -50,14 +50,19 @@ const INIT_TASKS=[
 ];
 
 export function fetchTasks(){
-  console.log("fetching task, actions");
-  console.log(INIT_TASKS);
   return {
     type: FETCH_TASKS,
     payload: INIT_TASKS
   }
 }
-
+export function fetchTask(id){
+  console.log("action, fetchtask");
+  console.log(id);
+  return {
+    type: FETCH_TASK,
+    payload: _.find(INIT_TASKS, (x)=>x.id===id)
+  }
+}
 export function createTask(task){
   return{
     type: CREATE_TASK,
@@ -72,6 +77,11 @@ export function editTask(key, task){
   }
 }
 
-export function deleteTask(key){
-  return
+export function deleteTask(id){
+  console.log("delete");
+  console.log(id);
+  return{
+    type: DELETE_TASK,
+    payload: id
+  }
 }
