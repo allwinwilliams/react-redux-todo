@@ -21,7 +21,7 @@ export default class TaskList extends Component{
   render() {
     return (
       <div>
-        <h3>Task List</h3>
+        <h3>{this.props.title}</h3>
           { this.renderTaskList() }
       </div>
     );
