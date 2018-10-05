@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {createTask, editTask} from '../../actions';
+import {createTask, editTask, fetchTasks, fetchTask} from '../../actions';
 import Form from '../Form/Form';
 import _ from 'lodash';
 
@@ -16,20 +17,21 @@ class Modal extends Component{
     }
   }
   static getDerivedStateFromProps(props, current_state) {
-      if (current_state.task !== props.activeTask) {
-        return {
-          task: props.activeTask,
-          new: false
-        }
+    if (current_state.task !== props.activeTask) {
+      return {
+        task: props.activeTask,
+        new: false
       }
-      return null
     }
+    return null
+  }
 
   onClickNewForm(){
     console.log("new task");
     this.setState((state)=>{
       return {
-        new: true
+        new: true,
+        task: {}
       }
     });
     console.log(this.state);
@@ -41,7 +43,6 @@ class Modal extends Component{
     console.log("state task");
     console.log(this.state);
     return (
-
       <div>
       <button
         className="btn btn-primary pull-xs-right"
@@ -52,7 +53,7 @@ class Modal extends Component{
         <p>
           {`${(!this.state.new)?task.title:"new post"}`}
         </p>
-        <Form {...task} new={this.state.new}/>
+        <Form task={{...task}} new={this.state.new}/>
       </div>
     );
   }
@@ -65,4 +66,8 @@ function mapStateToProps(state){
     };
 }
 
-export default connect(mapStateToProps, {})(Modal);
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({editTask, createTask, fetchTask}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Modal);

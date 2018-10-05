@@ -18,6 +18,19 @@ export default (state=[], action)=>{
       console.log(action.payload);
       return _.concat(state,{id:_.uniqueId(), title: action.payload.title,description: action.payload.description,dueDate: action.payload.dueDate,state: _.toInteger(action.payload.state), member: action.payload.member});
       return state
+    case EDIT_TASK:
+      console.log("EDIT");
+      console.log(state);
+      console.log(action.payload);
+      let activeId=_.findIndex(state, (o)=>o.id==action.payload.id);
+      state[activeId].title=action.payload.task.title;
+      state[activeId].description=action.payload.task.description;
+      state[activeId].dueDate=action.payload.task.dueDate;
+      state[activeId].member=action.payload.task.member;
+      state[activeId].state=action.payload.task.state;
+      console.log("AFTER EDIT");
+      console.log(state);
+      return state;
     default:
       return state;
   }

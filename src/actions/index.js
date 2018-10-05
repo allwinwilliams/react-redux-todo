@@ -60,7 +60,7 @@ export function fetchTask(id){
   console.log(id);
   return {
     type: FETCH_TASK,
-    payload: _.find(INIT_TASKS, (x)=>x.id==id)
+    payload: (id)?(_.find(INIT_TASKS, (x)=>x.id==id)):null
   }
 }
 export function createTask(task){
@@ -73,7 +73,7 @@ export function createTask(task){
 export function editTask(key, task){
   return{
     type: EDIT_TASK,
-    payload: [key, task]
+    payload: {id: key, task: task}
   }
 }
 

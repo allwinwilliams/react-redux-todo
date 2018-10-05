@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import { fetchTask, deleteTask } from '../../actions';
+import { createTask, fetchTask, deleteTask, editTask } from '../../actions';
+import {bindActionCreators} from 'redux';
 import _ from 'lodash';
 
 class TaskItem extends Component{
@@ -9,10 +10,13 @@ class TaskItem extends Component{
       const {id} = this.props;
       this.props.deleteTask(id);
   }
+
   onShowClick(){
+
       const {id} = this.props;
       this.props.fetchTask(id);
   }
+
   render(){
     return(
       <li>
@@ -35,10 +39,13 @@ class TaskItem extends Component{
     );
   }
 }
+
 function mapStateToProps(state, props){
     return{
         task: _.find(state.tasks, (o)=>o.id===props.id)
     };
 }
-
-export default connect(mapStateToProps,{deleteTask, fetchTask})(TaskItem);
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({editTask, createTask, fetchTask}, dispatch)
+}
+export default connect(mapStateToProps,mapDispatchToProps)(TaskItem);

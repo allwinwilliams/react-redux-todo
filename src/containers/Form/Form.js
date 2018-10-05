@@ -1,34 +1,66 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, initialize } from 'redux-form';
 import {bindActionCreators} from 'redux';
-import {createTask, editTask} from '../../actions';
+import {createTask, editTask, fetchTask} from '../../actions';
 
 import _ from 'lodash';
 
 class Form extends Component{
   constructor(props) {
     super(props);
-    this.state = {task: this.props, new: this.props.new};
+    this.props.fetchTask(this.props.task.id);
+    console.log("FORM PROPS");
+    console.log(this.props.task);
+    this.state = {task: this.props.task, new: this.props.new};
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
-  componentDidMount(props){
-    this.setState((state) => {
-      return{
-        task: this.props, new: this.props.new
-      }
-    });
+  componentDidMount(){
+    const initData = {
+      "title": this.props.task.title,
+      "description": this.props.task.description,
+      "dueDate": this.props.task.dueDate,
+      "state": this.props.task.state,
+      "member": this.props.task.member
+    };
+
+    this.handleInitialize(initData);
+    this.props.dispatch(initialize('TaskForm', initData));
   }
+  componentDidUpdate(prevProps, prevState){
+    if (prevProps.task !== this.props.task) {
+      this.setState((state)=>{
+        return { task : this.props.task, new: this.props.new}
+      });
+    }
+    console.log("MOUNT");
+    if(this.props.task.id){}
+        this.props.fetchTask(this.state.task.id);
+    console.log("Componenet update PROPS, STATE");
+    console.log(this.props.task);
+    console.log(this.state.task);
+
+  }
+  handleInitialize() {
+    const initData = {
+      "title": this.props.task.title,
+      "description": this.props.task.description,
+      "dueDate": this.props.task.dueDate,
+      "state": this.props.task.state,
+      "member": this.props.task.member
+    };
+    this.props.initialize(initData);
+  }
+
   static getDerivedStateFromProps(props, current_state) {
       if (current_state.task !== props.activeTask) {
         return {
-          task: props,
+          task: props.task,
           new: props.new
         }
       }
       return null
     }
-
 
  fieldEntry(entry){
     if(this.props.new) return "";
@@ -36,43 +68,49 @@ class Form extends Component{
   }
 
   renderField(field){
+    console.log("FIELD");
+    console.log(field);
     return(
       <div>
-        <label>{field.label}</label>
-        <input
-          type="text"
-          value={`${field.fieldValue}`}
-          {...field.input}
-        />
+      <label>
+        {field.label}
+      </label>
+      <input
+        {...field.input}
+
+      />
+      {field.touched && field.error && <div className="error">{field.error}</div>}
       </div>
     )
   }
+
   onFormSubmit(values) {
     console.log("form values............");
     console.log(values);
-
     const task=this.props.activeTask;
     console.log("this.state UPDATED");
     console.log(this.state);
     console.log("ONFORMSUBMIT");
     console.log(values);
     if(this.state.new){
-      console.log("Create post");
+      console.log("Createtask");
       this.props.createTask(values);
     }
     else{
-      console.log("Edit post");
-      this.props.EditTask(values, this.state.task.id);
+      console.log("Edit post ID");
+      console.log(this.state.task.id);
+      this.props.editTask(this.state.task.id,values);
     }
-    values="";
+
   }
   render(){
-    console.log("FORM prop activetask");
-    const task=this.props;
+
     const newTask=this.props.new;
-    const {handleSubmit}=this.props;
+    const {handleSubmit }=this.props;
+    const task=this.props.task;
+    console.log("FORM prop activetask");
     console.log(task);
-    console.log(_.isUndefined(task.title));
+
     return (
       <div>
         <h2>form</h2>
@@ -84,35 +122,35 @@ class Form extends Component{
           <Field
             name="title"
             label="Title"
-            value={this.fieldEntry(task.title)}
+            fieldValue={this.fieldEntry(task.title)}
             component={this.renderField}
           />
 
           <Field
             name="description"
             label="Description"
-            value={this.fieldEntry(task.description)}
+            fieldValue={this.fieldEntry(task.description)}
             component={this.renderField}
           />
 
           <Field
             name="state"
             label="State"
-            value={this.fieldEntry(task.state)}
+            fieldValue={this.fieldEntry(task.state)}
             component={this.renderField}
           />
 
           <Field
             name="dueDate"
             label="Due Date"
-            value={this.fieldEntry(task.dueDate)}
+            fieldValue={this.fieldEntry(task.dueDate)}
             component={this.renderField}
           />
 
           <Field
             name="member"
             label="Member"
-            value={this.fieldEntry(task.member)}
+            fieldValue={this.fieldEntry(task.member)}
             component={this.renderField}
           />
 
@@ -128,13 +166,17 @@ class Form extends Component{
   }
 }
 
-function mapStateToProps(state){
-  return state => state;
-}
-function mapDispatchToProps(dispatch){
-  return bindActionCreators({editTask, createTask}, dispatch);
+function mapStateToProps(state, initProps){
+  return {
+    task: state.activeTask,
+    initialValues: initProps.task
+  };
 }
 
-export default reduxForm({
-  form: 'TaskForm'
-})(connect( mapStateToProps, mapDispatchToProps)(Form));
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({editTask, createTask, fetchTask}, dispatch)
+}
+
+let FormComponent=reduxForm({ form: 'TaskForm', keepDirtyOnReinitialize: true,  enableReinitialize: true})(Form);
+
+export default connect( mapStateToProps, mapDispatchToProps)(FormComponent);

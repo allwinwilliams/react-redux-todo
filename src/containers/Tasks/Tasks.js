@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
 import TaskList from '../../components/TaskList/TaskList';
-import { fetchTasks } from '../../actions/index';
+import { fetchTasks, editTask } from '../../actions/index';
 import _ from 'lodash';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class Tasks extends Component{
+
   componentDidMount(){
-        this.props.fetchTasks();
-    }
+      console.log("TASKS AFTER EDIT");
+      console.log(this.props.tasks);
+      this.props.fetchTasks();
+  }
   renderTasks(){
     return(
       <ul>
         <TaskList
-          tasks={_.filter(this.props.tasks, function(x) { return x.state==0; })}
+          tasks={_.filter(this.props.tasks, (x)=> { return x.state==0; })}
           title="To be done"
         />
         <TaskList
-          tasks={_.filter(this.props.tasks, function(x) { return x.state==1; })}
+          tasks={_.filter(this.props.tasks, (x)=> { return x.state==1; })}
           title="Doing"
         />
         <TaskList
-          tasks={_.filter(this.props.tasks, function(x) { return x.state==2; })}
+          tasks={_.filter(this.props.tasks, (x)=> { return x.state==2; })}
           title="Done"
         />
       </ul>
@@ -39,11 +42,14 @@ class Tasks extends Component{
 }
 
 function mapStateToProps(state){
-    return{
-        tasks: state.tasks
-    };
+  return{
+    tasks: state.tasks
+  };
+}
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({fetchTasks, editTask}, dispatch);
 }
 
 
 
-export default connect(mapStateToProps, {fetchTasks})(Tasks);
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
