@@ -1,4 +1,4 @@
-import Firebase from 'firebase';
+import {initializeApp} from 'firebase';
 import _ from 'lodash';
 
 import {FETCH_TASKS, FETCH_TASK, CREATE_TASK, EDIT_TASK, DELETE_TASK} from './types';
@@ -49,10 +49,21 @@ const INIT_TASKS=[
   }
 ];
 
+const TasksDB = initializeApp({
+
+    databaseURL: 'https://todo-8e9bc.firebaseio.com/',
+    projectId: 'todo-8e9bc'
+  });
+
+
 export function fetchTasks(){
-  return {
-    type: FETCH_TASKS,
-    payload: INIT_TASKS
+  return dispatch =>{
+    TasksDB.database().ref().once('value', snapshot=>{
+      dispatch({
+          type: FETCH_TASKS,
+          payload: snapshot.val()
+      })
+    });
   }
 }
 export function fetchTask(id){

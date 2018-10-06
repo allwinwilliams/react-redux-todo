@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import promise from 'redux-promise';
+import ReduxThunk from 'redux-thunk';
 
 import './index.css';
 import App from './components/App/App';
@@ -10,7 +10,7 @@ import App from './components/App/App';
 import reducers from './reducers';
 import * as serviceWorker from './serviceWorker';
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
 
 ReactDOM.render(
    <Provider store={createStoreWithMiddleware(reducers)}>
