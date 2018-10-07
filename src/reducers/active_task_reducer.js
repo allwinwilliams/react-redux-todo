@@ -1,4 +1,4 @@
-import {EDIT_TASK, FETCH_TASK} from "../actions/types";
+import {EDIT_TASK, FETCH_TASK, CREATE_TASK} from "../actions/types";
 import _ from 'lodash';
 
 export default (state={}, action)=>{
@@ -6,7 +6,10 @@ export default (state={}, action)=>{
     case FETCH_TASK:
       console.log("ACTIVE task KEY");
       console.log(action.payload);
-      if(_.isUndefined(action.payload)) return null;
+      if(_.isUndefined(action.payload))
+        return "0";
+      return action.payload;
+    case CREATE_TASK:
       return action.payload;
     default:
       return state;

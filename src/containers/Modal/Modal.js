@@ -9,30 +9,14 @@ import _ from 'lodash';
 
 import './Modal.css';
 class Modal extends Component{
-  constructor(props){
-    super(props);
-    this.state={
-      task: this.props.activeTask,
-      new: true
-    }
-  }
-  
+
   onClickNewForm(){
     console.log("new task");
-    this.setState((state)=>{
-      return {
-        new: true,
-        task: {}
-      }
-    });
-    console.log(this.state);
+    this.props.fetchTask(null);
   }
 
   render(){
-    console.log(this.props.activeTask);
-    let task=this.state.task;
-    console.log("-----------NEW-------------");
-    console.log(this.state.new);
+    let newTask=_.isUndefined(this.props.activeTask);
     return (
       <div>
       <button
@@ -42,9 +26,9 @@ class Modal extends Component{
       >NEW
       </button>
         <p>
-          {`${(!this.state.new)?task.title:"new post"}`}
+          {`${(!newTask)?this.props.activeTask.title:"new post"}`}
         </p>
-        <Form task={{...task}} new={this.state.new}/>
+        <Form task={{...this.props.activeTask}} new={newTask}/>
       </div>
     );
   }
@@ -52,7 +36,7 @@ class Modal extends Component{
 
 function mapStateToProps(state){
     return{
-        activeTask: state.activeTask
+        activeTask: _.find(state.tasks, (task)=> {return task.key==state.activeTaskKey})
     };
 }
 

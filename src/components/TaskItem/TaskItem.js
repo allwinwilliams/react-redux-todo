@@ -7,8 +7,6 @@ import _ from 'lodash';
 class TaskItem extends Component{
 
   onDeleteClick(){
-      console.log("onDeleteClick");
-      console.log(this.props.id);
       this.props.deleteTask(this.props.id);
   }
 
@@ -17,8 +15,6 @@ class TaskItem extends Component{
   }
 
   render(){
-    console.log("TASK ITEM");
-    console.log(this.props);
     return(
       <li>
         <div>

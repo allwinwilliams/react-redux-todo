@@ -82,18 +82,21 @@ export function fetchTask(key){
 export function createTask(task){
   console.log("createTask");
   console.log(task);
-  return (dispatch)=> Tasks.database().ref().push(task);
-  return{
-    type: CREATE_TASK,
-    payload: task
+  var key=Tasks.database().ref().push()
+  return (dispatch)=> {
+    var key=Tasks.database().ref().push(task).getKey();
+    dispatch({
+      type: CREATE_TASK,
+      payload: key
+    })
   }
 }
 
+
 export function editTask(key, task){
-  return{
-    type: EDIT_TASK,
-    payload: {id: key, task: task}
-  }
+  console.log("edit task");
+  console.log(task);
+  return (dispatch) => Tasks.database().ref(`/${key}`).update(task);
 }
 
 export function deleteTask(key){

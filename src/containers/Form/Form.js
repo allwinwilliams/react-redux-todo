@@ -9,10 +9,11 @@ import _ from 'lodash';
 class Form extends Component{
   constructor(props) {
     super(props);
+    console.log("FORM PROPS");
+    console.log(this.props);
     this.props.fetchTask(this.props.task.key);
     console.log("FORM PROPS");
     console.log(this.props.task);
-    this.state = {task: this.props.task, new: this.props.new};
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
   componentDidMount(){
@@ -23,44 +24,21 @@ class Form extends Component{
       "state": this.props.task.state,
       "member": this.props.task.member
     };
-
-    this.handleInitialize(initData);
+    console.log("FORM PROPS");
+    console.log(this.props);
+    this.props.initialize(initData);
     this.props.dispatch(initialize('TaskForm', initData));
   }
   componentDidUpdate(prevProps, prevState){
-    if (prevProps.task !== this.props.task) {
-      this.setState((state)=>{
-        return { task : this.props.task, new: this.props.new}
-      });
-    }
+    console.log("FORM PROPS");
+    console.log(this.props);
+    console.log("STATE")
     console.log("MOUNT");
-    if(this.props.task.key){}
-        this.props.fetchTask(this.state.task.key);
-    console.log("Componenet update PROPS, STATE");
-    console.log(this.props.task);
-    console.log(this.state.task);
-
-  }
-  handleInitialize() {
-    const initData = {
-      "title": this.props.task.title,
-      "description": this.props.task.description,
-      "dueDate": this.props.task.dueDate,
-      "state": this.props.task.state,
-      "member": this.props.task.member
-    };
-    this.props.initialize(initData);
-  }
-
-  static getDerivedStateFromProps(props, current_state) {
-      if (current_state.task !== props.activeTask) {
-        return {
-          task: props.task,
-          new: props.new
-        }
-      }
-      return null
+    if(this.props.task.key){
+        this.props.fetchTask(this.props.task.key);
     }
+
+  }
 
  fieldEntry(entry){
     if(this.props.new) return "";
@@ -68,8 +46,6 @@ class Form extends Component{
   }
 
   renderField(field){
-    console.log("FIELD");
-    console.log(field);
     return(
       <div>
       <label>
@@ -88,25 +64,23 @@ class Form extends Component{
     console.log("form values............");
     console.log(values);
     const task=this.props.activeTask;
-    console.log("this.state UPDATED");
-    console.log(this.state);
+
     console.log("ONFORMSUBMIT");
     console.log(values);
-    if(this.state.new){
+    if(this.props.new){
       console.log("Createtask");
       this.props.createTask(values);
     }
     else{
       console.log("Edit post ID");
-      console.log(this.state.task.key);
-      this.props.editTask(this.state.task.key,values);
+      console.log(this.props.task.key);
+      this.props.editTask(this.props.task.key,values);
     }
 
   }
   render(){
 
-    const newTask=this.props.new;
-    const {handleSubmit }=this.props;
+    const {handleSubmit}=this.props;
     const task=this.props.task;
     console.log("FORM prop activetask");
     console.log(task);
@@ -122,6 +96,7 @@ class Form extends Component{
           <Field
             name="title"
             label="Title"
+            type="text"
             fieldValue={this.fieldEntry(task.title)}
             component={this.renderField}
           />
@@ -129,6 +104,7 @@ class Form extends Component{
           <Field
             name="description"
             label="Description"
+            type="text"
             fieldValue={this.fieldEntry(task.description)}
             component={this.renderField}
           />
@@ -136,6 +112,7 @@ class Form extends Component{
           <Field
             name="state"
             label="State"
+            type="number"
             fieldValue={this.fieldEntry(task.state)}
             component={this.renderField}
           />
@@ -143,6 +120,7 @@ class Form extends Component{
           <Field
             name="dueDate"
             label="Due Date"
+            type="date"
             fieldValue={this.fieldEntry(task.dueDate)}
             component={this.renderField}
           />
@@ -150,6 +128,7 @@ class Form extends Component{
           <Field
             name="member"
             label="Member"
+            type="text"
             fieldValue={this.fieldEntry(task.member)}
             component={this.renderField}
           />
@@ -168,8 +147,7 @@ class Form extends Component{
 
 function mapStateToProps(state, initProps){
   return {
-    task: _.map(state.task, (task)=> {return task.key===state.activeTaskKey}),
-    initialValues: initProps.task
+    initialValues:  _.find(state.tasks, (task)=> {return task.key==state.activeTaskKey})
   };
 }
 
