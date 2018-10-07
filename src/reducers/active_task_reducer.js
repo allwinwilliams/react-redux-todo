@@ -4,9 +4,9 @@ import _ from 'lodash';
 export default (state={}, action)=>{
   switch (action.type) {
     case FETCH_TASK:
-      console.log("active task");
+      console.log("ACTIVE task KEY");
       console.log(action.payload);
-      if(!action.payload) return {};
+      if(_.isUndefined(action.payload)) return null;
       return action.payload;
     default:
       return state;

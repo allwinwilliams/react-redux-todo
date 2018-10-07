@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import { createTask, fetchTask, deleteTask, editTask } from '../../actions';
+import { createTask, fetchTask, deleteTask, editTask, fetchTasks } from '../../actions';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
 
 class TaskItem extends Component{
 
   onDeleteClick(){
-      const {id} = this.props;
-      this.props.deleteTask(id);
+      console.log("onDeleteClick");
+      console.log(this.props.id);
+      this.props.deleteTask(this.props.id);
   }
 
   onShowClick(){
-
-      const {id} = this.props;
-      this.props.fetchTask(id);
+      this.props.fetchTask(this.props.id);
   }
 
   render(){
+    console.log("TASK ITEM");
+    console.log(this.props);
     return(
       <li>
         <div>
@@ -41,11 +42,11 @@ class TaskItem extends Component{
 }
 
 function mapStateToProps(state, props){
-    return{
-        task: _.find(state.tasks, (o)=>o.id===props.id)
-    };
+
 }
+
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({editTask, createTask, fetchTask}, dispatch)
+  return bindActionCreators({fetchTasks, editTask, createTask, fetchTask, deleteTask}, dispatch)
 }
-export default connect(mapStateToProps,mapDispatchToProps)(TaskItem);
+
+export default connect(null,mapDispatchToProps)(TaskItem);

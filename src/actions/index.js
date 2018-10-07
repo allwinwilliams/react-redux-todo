@@ -49,32 +49,40 @@ const INIT_TASKS=[
   }
 ];
 
-const TasksDB = initializeApp({
-
+const Tasks = initializeApp({
     databaseURL: 'https://todo-8e9bc.firebaseio.com/',
     projectId: 'todo-8e9bc'
   });
 
 
 export function fetchTasks(){
-  return dispatch =>{
-    TasksDB.database().ref().once('value', snapshot=>{
+  return (dispatch) =>{
+    Tasks.database().ref().on('value', (snapshot)=>{
+      console.log("FIREBASE SNAPSHOT");
+      let payload=[];
+      snapshot.forEach((snapChild)=>{
+        payload.push({...snapChild.val(), key: snapChild.key});
+      })
       dispatch({
           type: FETCH_TASKS,
-          payload: snapshot.val()
+          payload: payload
       })
     });
   }
 }
-export function fetchTask(id){
+
+export function fetchTask(key){
   console.log("action, fetchtask");
-  console.log(id);
+  console.log(key);
   return {
     type: FETCH_TASK,
-    payload: (id)?(_.find(INIT_TASKS, (x)=>x.id==id)):null
+    payload: key
   }
 }
 export function createTask(task){
+  console.log("createTask");
+  console.log(task);
+  return (dispatch)=> Tasks.database().ref().push(task);
   return{
     type: CREATE_TASK,
     payload: task
@@ -88,11 +96,8 @@ export function editTask(key, task){
   }
 }
 
-export function deleteTask(id){
+export function deleteTask(key){
   console.log("delete");
-  console.log(id);
-  return{
-    type: DELETE_TASK,
-    payload: id
-  }
+  console.log(key);
+  return (dispatch) => Tasks.database().ref(`/${key}`).remove();
 }

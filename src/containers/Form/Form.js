@@ -9,7 +9,7 @@ import _ from 'lodash';
 class Form extends Component{
   constructor(props) {
     super(props);
-    this.props.fetchTask(this.props.task.id);
+    this.props.fetchTask(this.props.task.key);
     console.log("FORM PROPS");
     console.log(this.props.task);
     this.state = {task: this.props.task, new: this.props.new};
@@ -34,8 +34,8 @@ class Form extends Component{
       });
     }
     console.log("MOUNT");
-    if(this.props.task.id){}
-        this.props.fetchTask(this.state.task.id);
+    if(this.props.task.key){}
+        this.props.fetchTask(this.state.task.key);
     console.log("Componenet update PROPS, STATE");
     console.log(this.props.task);
     console.log(this.state.task);
@@ -98,8 +98,8 @@ class Form extends Component{
     }
     else{
       console.log("Edit post ID");
-      console.log(this.state.task.id);
-      this.props.editTask(this.state.task.id,values);
+      console.log(this.state.task.key);
+      this.props.editTask(this.state.task.key,values);
     }
 
   }
@@ -168,7 +168,7 @@ class Form extends Component{
 
 function mapStateToProps(state, initProps){
   return {
-    task: state.activeTask,
+    task: _.map(state.task, (task)=> {return task.key===state.activeTaskKey}),
     initialValues: initProps.task
   };
 }

@@ -16,16 +16,7 @@ class Modal extends Component{
       new: true
     }
   }
-  static getDerivedStateFromProps(props, current_state) {
-    if (current_state.task !== props.activeTask) {
-      return {
-        task: props.activeTask,
-        new: false
-      }
-    }
-    return null
-  }
-
+  
   onClickNewForm(){
     console.log("new task");
     this.setState((state)=>{
@@ -40,15 +31,15 @@ class Modal extends Component{
   render(){
     console.log(this.props.activeTask);
     let task=this.state.task;
-    console.log("state task");
-    console.log(this.state);
+    console.log("-----------NEW-------------");
+    console.log(this.state.new);
     return (
       <div>
       <button
         className="btn btn-primary pull-xs-right"
         type="submit"
         onClick={this.onClickNewForm.bind(this)}
-      >New Task
+      >NEW
       </button>
         <p>
           {`${(!this.state.new)?task.title:"new post"}`}
@@ -60,7 +51,6 @@ class Modal extends Component{
 }
 
 function mapStateToProps(state){
-    console.log(state);
     return{
         activeTask: state.activeTask
     };

@@ -7,7 +7,7 @@ import { reducer as FormReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
   tasks: TasksReducer,
-  activeTask: ActiveTaskReducer,
+  activeTaskKey: ActiveTaskReducer,
   form: FormReducer
 });
 
