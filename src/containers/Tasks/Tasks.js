@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TaskList from '../../components/TaskList/TaskList';
 import { fetchTasks, editTask, deleteTask, createTask } from '../../actions/index';
 import _ from 'lodash';
-
+import {STATES} from '../../actions/types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -14,45 +14,49 @@ class Tasks extends Component{
       tasks: this.props.tasks
     }
   }
-  componentDidMount(){
 
+  componentDidMount(){
       this.props.fetchTasks();
-      console.log("TASKS AFTER EDIT");
-      console.log(this.props.tasks);
       this.setState((prevState)=>{
         return{
           tasks: this.props.tasks
         }
       })
-
   }
+
   renderTasks(){
-    console.log("renderTasks");
-    console.log(this.props.tasks);
     if((!this.props.tasks[0])) return (
-      <p>Loading</p>
+      <div className="text-center mt-5">
+        Loading...
+      </div>
     );
     return(
-      <ul>
-        <TaskList
-          tasks={_.filter(this.props.tasks, (x)=> { return x.state==0; })}
-          title="To be done"
-        />
-        <TaskList
-          tasks={_.filter(this.props.tasks, (x)=> { return x.state==1; })}
-          title="Doing"
-        />
-        <TaskList
-          tasks={_.filter(this.props.tasks, (x)=> { return x.state==2; })}
-          title="Done"
-        />
-      </ul>
+      <div className="container-fluid h-100">
+        <div className="row h-100">
+          {
+            _.map(STATES, (state)=>{
+              return(
+                <div className="col px-0"
+                    key={state.value}
+                >
+                  <TaskList
+                    tasks={_.filter(this.props.tasks, (x)=> { return x.state==state.value; })}
+                    title={state.name.toUpperCase()}
+                    value={state.value}
+                    color={state.color}
+
+                  />
+                </div>
+              )
+            })
+          }
+        </div>
+      </div>
     );
   }
   render(){
     return (
       <div>
-        <h3>To do Items</h3>
           { this.renderTasks() }
       </div>
     );

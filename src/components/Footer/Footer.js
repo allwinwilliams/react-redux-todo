@@ -5,9 +5,13 @@ import './Footer.css';
 class Footer extends Component {
   render() {
     return (
-      <p>
-        @copy Todo List 2018
-      </p>
+      <footer className="footer">
+        <div className="container">
+          <span className="text-muted">
+            @copy Todo List 2018
+          </span>
+        </div>
+    </footer>
     );
   }
 }

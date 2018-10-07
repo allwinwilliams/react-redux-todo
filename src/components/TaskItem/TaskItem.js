@@ -14,31 +14,65 @@ class TaskItem extends Component{
       this.props.fetchTask(this.props.id);
   }
 
-  render(){
+  renderAttribute(attribure, value){
+    if(_.isEmpty(value)) return "";
     return(
-      <li>
-        <div>
-            <h4>
-              <button
-                className="btn btn-danger pull-xs-right"
-                onClick={this.onDeleteClick.bind(this)}
-                > Delete
-                </button>
-                <button
-                  className="btn btn-primary pull-xs-right"
-                  onClick={this.onShowClick.bind(this)}
-                  > Show
-                  </button>
-              {this.props.title}
-            </h4>
-        </div>
-      </li>
+      <p className='mb-0'>
+        {attribure}: <strong>{_.truncate(value,{length: 25})}</strong>
+      </p>
+    )
+  }
+
+  renderDate(date){
+    if(_.isEmpty(date)) return "";
+    return(
+      <h6 className="card-subtitle text-muted my-1">
+        Due by {date}
+      </h6>
     );
   }
-}
 
-function mapStateToProps(state, props){
+  render(){
+    return(
+      <div className="card mx-3 my-4" style={{opacity: 0.92}}>
+          <div className="card-body">
+              <div
+                onClick={this.onShowClick.bind(this)}
+                data-toggle="modal"
+                data-target="#formModal"
+              >
+                <h5 className="card-title">
+                  {_.truncate(this.props.title,{length: 30})}
+                </h5>
+                {this.renderDate(this.props.dueDate)}
+                <div className="card-text text-muted">
 
+                  {this.renderAttribute("Member",this.props.member)}
+                  {this.renderAttribute("Tags",this.props.tags)}
+
+                </div>
+              </div>
+              <hr className="mt-3 mb-2"/>
+              <a
+               className="card-link text-danger ml-auto"
+               style={{cursor: "pointer"}}
+               onClick={this.onDeleteClick.bind(this)}>
+                Delete
+              </a>
+              <a
+               className="card-link text-primary mr-auto"
+               style={{cursor: "pointer"}}
+               onClick={this.onShowClick.bind(this)}
+               data-toggle="modal"
+               data-target="#formModal"
+               >
+                Edit
+              </a>
+            </div>
+        </div>
+
+    );
+  }
 }
 
 function mapDispatchToProps(dispatch){

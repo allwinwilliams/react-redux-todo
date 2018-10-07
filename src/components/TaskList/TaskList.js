@@ -6,7 +6,7 @@ export default class TaskList extends Component{
 
   renderTaskList(){
     return(
-      <ul>
+      <div className="p-3" style={{backgroundColor: `${this.props.color}`}}>
         {
           _.map(this.props.tasks, (task)=>{
             return(
@@ -18,14 +18,13 @@ export default class TaskList extends Component{
           )}
         )
         }
-      </ul>
+      </div>
     );
   }
-
   render() {
     return (
       <div>
-        <h3>{this.props.title}</h3>
+        <h3 className="text-center m-0 py-2" style={{color: `${this.props.color}`}}><strong>{this.props.title}</strong></h3>
           { this.renderTaskList() }
       </div>
     );
