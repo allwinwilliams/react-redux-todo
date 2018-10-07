@@ -35,11 +35,13 @@ class TaskItem extends Component{
   render(){
     return(
       <div className="card mx-3 my-4" style={{opacity: 0.92}}>
-          <div className="card-body">
+          <div className="card-body"
+            onClick={this.onShowClick.bind(this)}
+            data-toggle="modal"
+            data-target="#formModal"
+          >
               <div
-                onClick={this.onShowClick.bind(this)}
-                data-toggle="modal"
-                data-target="#formModal"
+
               >
                 <h5 className="card-title">
                   {_.truncate(this.props.title,{length: 30})}

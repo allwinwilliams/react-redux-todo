@@ -32,7 +32,6 @@ class Form extends Component{
     if(this.props.task.key){
         this.props.fetchTask(this.props.task.key);
     }
-
   }
 
   onDeleteClick(event){
@@ -44,6 +43,24 @@ class Form extends Component{
       // // this.refs.formModal.modal('hide');
       // this.props.deleteTask(this.props.activeTaskKey);
 
+  }
+  onFormSubmit(values) {
+    let keys=_.keys(values)
+    let unkeys=_.filter(keys, (key)=>{
+        if(_.isUndefined(values[key]))
+                  return key
+          });
+    let task=_.omit(values,unkeys);
+    if(!_.isEmpty(task.tags)){
+      task.tags=_.words(task.tags);
+    }
+
+    if(this.props.new){
+      this.props.createTask(task);
+    }
+    else{
+      this.props.editTask(this.props.task.key, task);
+    }
   }
 
  fieldEntry(entry){
@@ -62,23 +79,26 @@ class Form extends Component{
         {...field.input}
         type={field.type}
       />
-      {field.touched && field.error && <div className="error">{field.error}</div>}
       </div>
     )
   }
   renderTitle(title){
     return(
       <div className="form-group">
-      <label>
-        {title.label}
-      </label>
-      <h2><input
-        className="form-control form-control-lg"
-        {...title.input}
-        type={title.type}
-        placeholder="Title of the new task"
-      /></h2>
-      {title.touched && title.error && <div className="error">{title.error}</div>}
+        <label>
+          {title.label}
+        </label>
+        <h2>
+          <input
+            className="form-control form-control-lg"
+            {...title.input}
+            type={title.type}
+            placeholder="Title of the new task"
+          />
+        </h2>
+        <div className="error text-danger text-sm">
+          {(title.meta.touched && title.meta.error) ?title.meta.error :""}
+        </div>
       </div>
     )
   }
@@ -95,32 +115,40 @@ class Form extends Component{
         placeholder="Detailed description of the task"
       >
       </textarea>
-      {desc.touched && desc.error && <div className="error">{desc.error}</div>}
       </div>
     )
   }
   renderState(state){
     return(
       <div className="form-group">
-      <label>
-        {state.label}
-      </label>
-      <select className="form-control" {...state.input}>
-        <option value="0">TO BE DONE</option>
-        <option value="1">DOING</option>
-        <option value="2">DONE</option>
-      </select>
-      {state.touched && state.error && <div className="error">{state.error}</div>}
+        <label>
+          {state.label}
+        </label>
+        <select className="form-control" {...state.input}>
+          <option disable="true">Select a State</option>
+          <option value="0">TO BE DONE</option>
+          <option value="1">DOING</option>
+          <option value="2">DONE</option>
+        </select>
+        <div className="error text-danger text-sm">
+          {(state.meta.touched && state.meta.error) ?state.meta.error:""}
+        </div>
       </div>
     )
   }
-  onFormSubmit(values) {
-    if(this.props.new){
-      this.props.createTask(values);
-    }
-    else{
-      this.props.editTask(this.props.task.key,values);
-    }
+  renderTags(field){
+    return(
+      <div>
+      <label>
+        {field.label}
+      </label>
+      <input
+        className="form-control"
+        {...field.input}
+        type={field.type}
+      />
+      </div>
+    )
   }
 
   renderLeftFields(){
@@ -178,7 +206,7 @@ class Form extends Component{
           label="Tags"
           type="text"
           fieldValue={this.fieldEntry(task.dueDate)}
-          component={this.renderField}
+          component={this.renderTags}
         />
       </div>
     );
@@ -198,7 +226,6 @@ class Form extends Component{
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-
             <form onSubmit={handleSubmit(this.onFormSubmit.bind(this))}>
                 <div className="modal-body">
                   <div className="row">
@@ -229,8 +256,9 @@ class Form extends Component{
 }
 
 function mapStateToProps(state, initProps){
+  let task=_.find(state.tasks, (task)=> {return task.key==state.activeTaskKey});
   return {
-    initialValues:  _.find(state.tasks, (task)=> {return task.key==state.activeTaskKey}),
+    initialValues:  task,
     activeTaskKey: state.activeTaskKey
   };
 }
@@ -239,6 +267,17 @@ function mapDispatchToProps(dispatch){
   return bindActionCreators({editTask, createTask, fetchTask, deleteTask}, dispatch)
 }
 
-let FormComponent=reduxForm({ form: 'TaskForm', keepDirtyOnReinitialize: true,  enableReinitialize: true})(Form);
+function formValidate(values){
+   const error={};
+   if(!values.title){
+     error.title="Please, enter a title!!";
+   }
+   if(!values.state){
+     error.state="Please, select a state!!";
+   }
+   return error;
+ }
+
+let FormComponent=reduxForm({ form: 'TaskForm', validate: formValidate, keepDirtyOnReinitialize: true,  enableReinitialize: true})(Form);
 
 export default connect( mapStateToProps, mapDispatchToProps)(FormComponent);

@@ -17,7 +17,7 @@ export function fetchTasks(){
       })
       dispatch({
           type: FETCH_TASKS,
-          payload: payload
+          payload: _.sortBy(payload, ['dueDate'])
       })
     });
   }

@@ -1,4 +1,4 @@
-import {EDIT_TASK, FETCH_TASK, CREATE_TASK} from "../actions/types";
+import { FETCH_TASK, CREATE_TASK} from "../actions/types";
 import _ from 'lodash';
 
 export default (state={}, action)=>{
@@ -12,5 +12,4 @@ export default (state={}, action)=>{
     default:
       return state;
   }
-  return state;
 }

@@ -1,5 +1,4 @@
-import {FETCH_TASKS,CREATE_TASK,EDIT_TASK,DELETE_TASK} from "../actions/types";
-import _ from 'lodash';
+import {FETCH_TASKS} from "../actions/types";
 
 export default (state=[], action)=>{
   switch (action.type) {

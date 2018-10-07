@@ -24,7 +24,7 @@ export default class TaskList extends Component{
   render() {
     return (
       <div>
-        <h3 className="text-center m-0 py-2" style={{color: `${this.props.color}`}}><strong>{this.props.title}</strong></h3>
+        <h3 className="text-center m-0 py-2 bg-white" style={{color: `${this.props.color}`}}><strong>{this.props.title}</strong></h3>
           { this.renderTaskList() }
       </div>
     );

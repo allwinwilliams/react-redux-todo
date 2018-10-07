@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TaskList from '../../components/TaskList/TaskList';
 import { fetchTasks, editTask, deleteTask, createTask } from '../../actions/index';
 import _ from 'lodash';
-import {STATES} from '../../actions/types';
+import {TASK_STATES as TasksStates} from '../../actions/states';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -26,7 +26,7 @@ class Tasks extends Component{
 
   renderTasks(){
     if((!this.props.tasks[0])) return (
-      <div className="text-center mt-5">
+      <div className="text-center mt-5 text-white">
         Loading...
       </div>
     );
@@ -34,13 +34,13 @@ class Tasks extends Component{
       <div className="container-fluid h-100">
         <div className="row h-100">
           {
-            _.map(STATES, (state)=>{
+            _.map(TasksStates, (state)=>{
               return(
                 <div className="col px-0"
                     key={state.value}
                 >
                   <TaskList
-                    tasks={_.filter(this.props.tasks, (x)=> { return x.state==state.value; })}
+                    tasks={_.filter(this.props.tasks, (x)=> { return x.state===state.value; })}
                     title={state.name.toUpperCase()}
                     value={state.value}
                     color={state.color}
@@ -71,7 +71,5 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
   return bindActionCreators({fetchTasks, editTask, createTask, deleteTask}, dispatch);
 }
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
