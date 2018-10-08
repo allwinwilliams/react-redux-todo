@@ -18,4 +18,4 @@ cd react-todo
 npm install
 npm start
 ```
-You can now view the todo list project in http://localhost:3000 in your browser.
+You can now view the todo list project in http://localhost:3000 on your browser.

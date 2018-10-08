@@ -7,7 +7,9 @@ import _ from 'lodash';
 class TaskItem extends Component{
 
   onDeleteClick(){
-      this.props.deleteTask(this.props.id);
+      if(window.confirm("Are you sure want to delete this task?")){
+        this.props.deleteTask(this.props.id);
+      }
   }
 
   onShowClick(){
@@ -42,13 +44,9 @@ class TaskItem extends Component{
 
   render(){
     return(
-      <div className="card mx-3 my-4" style={{opacity: 0.92}}>
-          <div className="card-body p-4"
-            onClick={this.onShowClick.bind(this)}
-            data-toggle="modal"
-            data-target="#formModal"
-          >
-              <div>
+      <div className="card mx-4 my-4" style={{opacity: 0.92}}>
+          <div className="card-body p-3">
+              <div className="p-0">
                 <h5 className="card-title">
                   {_.truncate(this.props.title,{length: 30})}
                 </h5>
@@ -60,7 +58,7 @@ class TaskItem extends Component{
 
                 </div>
               </div>
-              <hr className="mt-3 mb-2"/>
+              <hr className="m-0 my-2"/>
               <ul className="list-inline mb-0">
                 <li
                  className="card-link text-danger list-inline-item display-inlineml-auto"
