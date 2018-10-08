@@ -70,8 +70,6 @@ export function searchTasks(q){
     }else{
       payload=state.tasks;
     }
-    console.log("search result");
-    console.log(payload);
     dispatch({
       type: SEARCH_TASKS,
       payload: payload

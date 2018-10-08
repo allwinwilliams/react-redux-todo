@@ -19,7 +19,8 @@ class Form extends Component{
       "description": this.props.task.description,
       "dueDate": this.props.task.dueDate,
       "state": this.props.task.state,
-      "member": this.props.task.member
+      "member": this.props.task.member,
+      "tags": _.join(this.props.task.tags, ", ")
     };
 
     this.props.initialize(initData);
@@ -75,6 +76,7 @@ class Form extends Component{
         className="form-control"
         {...field.input}
         type={field.type}
+        placeholder={field.placeholder}
       />
       </div>
     )
@@ -143,6 +145,7 @@ class Form extends Component{
         className="form-control"
         {...field.input}
         type={field.type}
+        placeholder="Tags (seperated by Space or Comma)"
       />
       </div>
     )
@@ -165,6 +168,7 @@ class Form extends Component{
             name="member"
             label="Member"
             type="text"
+            placeholder="Name of the member..."
             fieldValue={this.fieldEntry(task.member)}
             component={this.renderField}
           />
@@ -253,9 +257,8 @@ class Form extends Component{
 }
 
 function mapStateToProps(state, initProps){
-  let task=_.find(state.tasks, (task)=> {return task.key===state.activeTaskKey});
   return {
-    initialValues:  task,
+    initialValues:  _.find(state.tasks, (task)=> {return task.key===state.activeTaskKey}),
     activeTaskKey: state.activeTaskKey
   };
 }

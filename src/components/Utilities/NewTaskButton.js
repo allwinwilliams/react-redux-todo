@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {createTask, editTask} from '../../actions';
+import {createTask, editTask, fetchTask} from '../../actions';
 
 
 import './NewTaskButton.css';
@@ -32,7 +32,7 @@ class NewTaskButton extends Component{
 
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({editTask, createTask}, dispatch)
+  return bindActionCreators({editTask, createTask, fetchTask}, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(NewTaskButton);

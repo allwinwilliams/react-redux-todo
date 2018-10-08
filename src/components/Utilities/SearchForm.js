@@ -10,7 +10,6 @@ import './NewTaskButton.css';
 class SearchForm extends Component{
 
   onSearchSubmit(values){
-    console.log("search");
     this.props.fetchTasks();
     if(!_.isUndefined(values.q)){
       this.props.searchTasks(values.q);

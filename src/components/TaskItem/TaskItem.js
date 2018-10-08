@@ -31,6 +31,14 @@ class TaskItem extends Component{
       </h6>
     );
   }
+  renderTag(attribute,value){
+    if(_.isEmpty(value)) return "";
+    return(
+      <p className='mb-0'>
+        {attribute}: <strong>{_.truncate(_.join(value,", "),{length: 25})}</strong>
+      </p>
+    );
+  }
 
   render(){
     return(
@@ -48,7 +56,7 @@ class TaskItem extends Component{
                 <div className="card-text text-muted">
 
                   {this.renderAttribute("Member",this.props.member)}
-                  {this.renderAttribute("Tags",this.props.tags)}
+                  {this.renderTag("Tags",this.props.tags)}
 
                 </div>
               </div>
