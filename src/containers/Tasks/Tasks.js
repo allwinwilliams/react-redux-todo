@@ -13,10 +13,11 @@ class Tasks extends Component{
     this.state={
       tasks: this.props.tasks
     }
+    this.props.fetchTasks();
   }
 
   componentDidMount(){
-      this.props.fetchTasks();
+
       this.setState((prevState)=>{
         return{
           tasks: this.props.tasks
@@ -25,9 +26,9 @@ class Tasks extends Component{
   }
 
   renderTasks(){
-    if((!this.props.tasks[0])) return (
+    if(_.isEmpty(this.props.tasks)) return(
       <div className="text-center mt-5 text-white">
-        Loading...
+        {this.props.message}
       </div>
     );
     return(
@@ -65,7 +66,8 @@ class Tasks extends Component{
 
 function mapStateToProps(state){
   return{
-    tasks: state.tasks
+    tasks: state.tasks,
+    message: state.message
   };
 }
 function mapDispatchToProps(dispatch){

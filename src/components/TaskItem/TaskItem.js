@@ -35,14 +35,12 @@ class TaskItem extends Component{
   render(){
     return(
       <div className="card mx-3 my-4" style={{opacity: 0.92}}>
-          <div className="card-body"
+          <div className="card-body p-4"
             onClick={this.onShowClick.bind(this)}
             data-toggle="modal"
             data-target="#formModal"
           >
-              <div
-
-              >
+              <div>
                 <h5 className="card-title">
                   {_.truncate(this.props.title,{length: 30})}
                 </h5>
@@ -55,21 +53,23 @@ class TaskItem extends Component{
                 </div>
               </div>
               <hr className="mt-3 mb-2"/>
-              <a
-               className="card-link text-danger ml-auto"
-               style={{cursor: "pointer"}}
-               onClick={this.onDeleteClick.bind(this)}>
-                Delete
-              </a>
-              <a
-               className="card-link text-primary mr-auto"
-               style={{cursor: "pointer"}}
-               onClick={this.onShowClick.bind(this)}
-               data-toggle="modal"
-               data-target="#formModal"
-               >
-                Edit
-              </a>
+              <ul className="list-inline mb-0">
+                <li
+                 className="card-link text-danger list-inline-item display-inlineml-auto"
+                 style={{cursor: "pointer"}}
+                 onClick={this.onDeleteClick.bind(this)}>
+                  Delete
+                </li>
+                <li
+                 className="card-link text-primary list-inline-item display-inline mr-auto"
+                 style={{cursor: "pointer"}}
+                 onClick={this.onShowClick.bind(this)}
+                 data-toggle="modal"
+                 data-target="#formModal"
+                 >
+                  Edit
+                </li>
+              </ul>
             </div>
         </div>
 

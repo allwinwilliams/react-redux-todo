@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 import { reduxForm, Field, initialize } from 'redux-form';
 import {bindActionCreators} from 'redux';
 import {createTask, editTask, fetchTask, deleteTask } from '../../actions';
-import ReactDOM from 'react-dom';
-import $ from 'jquery';
 
 import _ from 'lodash';
 
@@ -13,7 +11,6 @@ class Form extends Component{
   constructor(props) {
     super(props);
     this.props.fetchTask(this.props.task.key);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   componentDidMount(){
@@ -90,7 +87,7 @@ class Form extends Component{
         </label>
         <h2>
           <input
-            className="form-control form-control-lg"
+            className={`form-control form-control-lg ${(title.meta.touched && title.meta.error)?"is-invalid":""}`}
             {...title.input}
             type={title.type}
             placeholder="Title of the new task"
@@ -108,7 +105,7 @@ class Form extends Component{
       <label>
         {desc.label}
       </label>
-      <textarea className="form-control" rows="3"
+      <textarea rows="3"
         className="form-control"
         {...desc.input}
         type={desc.type}
@@ -124,7 +121,7 @@ class Form extends Component{
         <label>
           {state.label}
         </label>
-        <select className="form-control" {...state.input}>
+        <select className={`form-control ${(state.meta.touched && state.meta.error)?"is-invalid":""}`} {...state.input}>
           <option disable="true">Select a State</option>
           <option value="0">TO BE DONE</option>
           <option value="1">DOING</option>
@@ -256,7 +253,7 @@ class Form extends Component{
 }
 
 function mapStateToProps(state, initProps){
-  let task=_.find(state.tasks, (task)=> {return task.key==state.activeTaskKey});
+  let task=_.find(state.tasks, (task)=> {return task.key===state.activeTaskKey});
   return {
     initialValues:  task,
     activeTaskKey: state.activeTaskKey
@@ -278,6 +275,8 @@ function formValidate(values){
    return error;
  }
 
-let FormComponent=reduxForm({ form: 'TaskForm', validate: formValidate, keepDirtyOnReinitialize: true,  enableReinitialize: true})(Form);
+let FormComponent=reduxForm({
+   form: 'TaskForm', validate: formValidate, keepDirtyOnReinitialize: true,  enableReinitialize: true
+})(Form);
 
 export default connect( mapStateToProps, mapDispatchToProps)(FormComponent);

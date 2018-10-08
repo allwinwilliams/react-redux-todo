@@ -22,7 +22,7 @@ class Modal extends Component{
 
 function mapStateToProps(state){
     return{
-        activeTask: _.find(state.tasks, (task)=> {return task.key==state.activeTaskKey})
+        activeTask: _.find(state.tasks, (task)=> {return task.key===state.activeTaskKey})
     };
 }
 

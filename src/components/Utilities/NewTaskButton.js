@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {createTask, editTask, fetchTasks, fetchTask} from '../../actions';
+import {createTask, editTask} from '../../actions';
 
 
 import './NewTaskButton.css';
@@ -18,7 +18,7 @@ class NewTaskButton extends Component{
     return (
       <div>
       <button
-        className="btn btn-primary btn-lg pull-xs-right"
+        className="btn btn-primary pull-xs-right"
         type="button"
         onClick={this.onClickNewForm.bind(this)}
         data-toggle="modal"
@@ -32,7 +32,7 @@ class NewTaskButton extends Component{
 
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({editTask, createTask, fetchTask}, dispatch)
+  return bindActionCreators({editTask, createTask}, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(NewTaskButton);

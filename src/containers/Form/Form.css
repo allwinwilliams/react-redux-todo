@@ -7,3 +7,6 @@ input, textarea{
 select{
   border-color: black;
 }
+.is-invalid{
+  border: 1px solid red !important;
+}
