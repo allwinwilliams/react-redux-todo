@@ -20,8 +20,7 @@ class SearchForm extends Component{
       <input
         className="form-control w-75  mr-sm-2"
         type="search"
-        placeholder="Search"
-        aria-label="Search"
+        placeholder="Title, Description, Tags..."
         {...field.input}
         />
     );

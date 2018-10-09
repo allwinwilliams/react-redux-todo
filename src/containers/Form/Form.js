@@ -22,8 +22,6 @@ class Form extends Component{
       "member": this.props.task.member,
       "tags": _.join(this.props.task.tags, ", ")
     };
-
-    this.props.initialize(initData);
     this.props.dispatch(initialize('TaskForm', initData));
   }
   componentDidUpdate(prevProps, prevState){
@@ -32,15 +30,12 @@ class Form extends Component{
     }
   }
 
-  onDeleteClick(event){
-      event.preventDefault();
-      event.stopPropagation();
-      console.log("delete");
-      // console.log(ReactDOM.findDOMNode(this).id);
-      // ReactDOM.findDOMNode(this).addClass('hide');
-      // // this.refs.formModal.modal('hide');
-      // this.props.deleteTask(this.props.activeTaskKey);
+  onDeleteClick(){
 
+      if(!this.props.new && window.confirm("Are you sure want to delete this task?")){
+        window.$('#formModal').modal('hide');
+        this.props.deleteTask(this.props.task.key);
+      }
   }
   onFormSubmit(values) {
     let keys=_.keys(values)
@@ -55,9 +50,11 @@ class Form extends Component{
 
     if(this.props.new){
       this.props.createTask(task);
+      window.$('#formModal').modal('hide');
     }
     else{
       this.props.editTask(this.props.task.key, task);
+      window.$('#formModal').modal('hide');
     }
   }
 
@@ -239,12 +236,25 @@ class Form extends Component{
                       </div>
                     </div>
                     <div className="modal-footer">
-                        <button
-                          className="btn btn-primary text-center w-100"
-                          type="submit"
-                        >
-                          SAVE
-                        </button>
+                      <ul className="list-inline row w-100">
+                        <li className="list-inline-item  col-md-2 mr-auto ">
+                          <button
+                            className={`btn btn-danger text-center mr-5 w-100 ${(this.props.new)?"disabled":""}`}
+                            type="button"
+                            onClick={this.onDeleteClick.bind(this)}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                        <li className="list-inline-item col">
+                          <button
+                            className="btn btn-primary text-center w-100"
+                            type="submit"
+                          >
+                            Save
+                          </button>
+                        </li>
+                      </ul>
                     </div>
                 </div>
             </form>

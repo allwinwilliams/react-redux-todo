@@ -8,7 +8,7 @@ class Footer extends Component {
       <footer className="footer">
         <div className="container">
           <span className="text-muted">
-            @copy Todo List 2018
+            &copy; Todo List 2018
           </span>
         </div>
     </footer>

@@ -6,12 +6,6 @@ import _ from 'lodash';
 
 class TaskItem extends Component{
 
-  onDeleteClick(){
-      if(window.confirm("Are you sure want to delete this task?")){
-        this.props.deleteTask(this.props.id);
-      }
-  }
-
   onShowClick(){
       this.props.fetchTask(this.props.id);
   }
@@ -44,7 +38,12 @@ class TaskItem extends Component{
 
   render(){
     return(
-      <div className="card mx-4 my-4" style={{opacity: 0.92}}>
+      <div  className="card mx-4 my-4"
+            style={{opacity: 0.92, cursor: "pointer"}}
+            onClick={this.onShowClick.bind(this)}
+            data-toggle="modal"
+            data-target="#formModal"
+      >
           <div className="card-body p-3">
               <div className="p-0">
                 <h5 className="card-title">
@@ -58,24 +57,6 @@ class TaskItem extends Component{
 
                 </div>
               </div>
-              <hr className="m-0 my-2"/>
-              <ul className="list-inline mb-0">
-                <li
-                 className="card-link text-danger list-inline-item display-inlineml-auto"
-                 style={{cursor: "pointer"}}
-                 onClick={this.onDeleteClick.bind(this)}>
-                  Delete
-                </li>
-                <li
-                 className="card-link text-primary list-inline-item display-inline mr-auto"
-                 style={{cursor: "pointer"}}
-                 onClick={this.onShowClick.bind(this)}
-                 data-toggle="modal"
-                 data-target="#formModal"
-                 >
-                  Edit
-                </li>
-              </ul>
             </div>
         </div>
 

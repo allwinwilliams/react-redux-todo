@@ -17,7 +17,6 @@ class Tasks extends Component{
   }
 
   componentDidMount(){
-
       this.setState((prevState)=>{
         return{
           tasks: this.props.tasks
@@ -45,7 +44,6 @@ class Tasks extends Component{
                     title={state.name.toUpperCase()}
                     value={state.value}
                     color={state.color}
-
                   />
                 </div>
               )
