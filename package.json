@@ -5,6 +5,7 @@
   "dependencies": {
     "ajv": "^6.5.4",
     "firebase": "^5.5.2",
+    "gh-pages": "^2.0.1",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "react": "^16.5.2",
@@ -33,5 +34,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "homepage" : "http://allwinwilliams.github.io/react-todo"
+  "homepage": "http://allwinwilliams.github.io/react-todo"
 }
