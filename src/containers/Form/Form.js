@@ -121,7 +121,7 @@ class Form extends Component{
           {state.label}
         </label>
         <select className={`form-control ${(state.meta.touched && state.meta.error)?"is-invalid":""}`} {...state.input}>
-          <option disable="true">Select a State</option>
+          <option disable="true" value="">Select a State</option>
           <option value="0">TO BE DONE</option>
           <option value="1">DOING</option>
           <option value="2">DONE</option>

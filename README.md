@@ -1,7 +1,7 @@
 # react-todo
 
 A simple TODO list web app built using React and Redux.
-
+A live demo of this project can be seen at http://allwinwilliams.com/react-todo/
 ## Description
 
 This is a simple to-do list project created using React and Redux. It stores the data in Firebase where a realtime database is used to store a list of tasks. Each task in the todo list has a title and anyone one of the following three states, TO BE DONE, DOING or DONE. A task can also have a number of tags, due date, a member which task is assigned to and a detailed description.
